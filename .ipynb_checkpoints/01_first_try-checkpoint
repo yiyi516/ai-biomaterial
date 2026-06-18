@@ -1,0 +1,177 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "83c797f4-a8ef-4f51-848d-a4e02d6c7cc6",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>材料</th>\n",
+       "      <th>分子量_kDa</th>\n",
+       "      <th>结晶度</th>\n",
+       "      <th>降解周期_天</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>PLLA-1</td>\n",
+       "      <td>100</td>\n",
+       "      <td>0.2</td>\n",
+       "      <td>60</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>PLLA-2</td>\n",
+       "      <td>200</td>\n",
+       "      <td>0.3</td>\n",
+       "      <td>120</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>PLLA-3</td>\n",
+       "      <td>300</td>\n",
+       "      <td>0.4</td>\n",
+       "      <td>200</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>PLLA-4</td>\n",
+       "      <td>400</td>\n",
+       "      <td>0.5</td>\n",
+       "      <td>300</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>PLLA-5</td>\n",
+       "      <td>500</td>\n",
+       "      <td>0.6</td>\n",
+       "      <td>450</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "       材料  分子量_kDa  结晶度  降解周期_天\n",
+       "0  PLLA-1      100  0.2      60\n",
+       "1  PLLA-2      200  0.3     120\n",
+       "2  PLLA-3      300  0.4     200\n",
+       "3  PLLA-4      400  0.5     300\n",
+       "4  PLLA-5      500  0.6     450"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "\n",
+    "data = pd.DataFrame({\n",
+    "    '材料': ['PLLA-1', 'PLLA-2', 'PLLA-3', 'PLLA-4', 'PLLA-5'],\n",
+    "    '分子量_kDa': [100, 200, 300, 400, 500],\n",
+    "    '结晶度': [0.2, 0.3, 0.4, 0.5, 0.6],\n",
+    "    '降解周期_天': [60, 120, 200, 300, 450]\n",
+    "})\n",
+    "data\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "14dc4d4e-8446-4018-843b-73e5a48dc1bc",
+   "metadata": {},
+   "source": [
+    "## 观察：分子量和结晶度越高，降解越慢"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "68f7b6b4-bbe6-42bc-b13f-70f400e9769b",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "模型系数: [9.5999904e-01 9.5999904e-04]\n",
+      "预测新材料(350kDa, 0.45结晶度): 274天\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/site-packages/sklearn/utils/validation.py:2827: UserWarning: X does not have valid feature names, but LinearRegression was fitted with feature names\n",
+      "  warnings.warn(\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.linear_model import LinearRegression\n",
+    "\n",
+    "X = data[['分子量_kDa', '结晶度']]\n",
+    "y = data['降解周期_天']\n",
+    "\n",
+    "model = LinearRegression()\n",
+    "model.fit(X, y)\n",
+    "\n",
+    "print(f\"模型系数: {model.coef_}\")\n",
+    "print(f\"预测新材料(350kDa, 0.45结晶度): {model.predict([[350, 0.45]])[0]:.0f}天\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d9a69c5a-11d2-42fa-b12b-3ee6451ddad3",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.14.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
